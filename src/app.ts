@@ -35,6 +35,7 @@ export function createApp(): Application {
 
   // ── CORS ──────────────────────────────────────────────────────────────────
   const origins = env.CLIENT_ORIGIN.split(',').map(o => o.trim());
+  console.log('✅ Allowed Origins:', origins);
   
   app.use(
     cors({
