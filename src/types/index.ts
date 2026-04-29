@@ -44,6 +44,7 @@ export interface TileUpdatedPayload {
   tileId: string;
   x: number;
   y: number;
+  ownerId: string;
   ownerName: string;
   color: string;
   claimedAt: string;

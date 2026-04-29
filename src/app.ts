@@ -34,9 +34,20 @@ export function createApp(): Application {
   );
 
   // ── CORS ──────────────────────────────────────────────────────────────────
+  const origins = env.CLIENT_ORIGIN.split(',').map(o => o.trim());
+  
   app.use(
     cors({
-      origin: env.CLIENT_ORIGIN,
+      origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        if (origins.includes(origin) || origins.includes('*')) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,

@@ -11,9 +11,11 @@ import { logger } from '../utils/logger';
  * Returns the io instance so it can be referenced elsewhere (e.g. in tests).
  */
 export function initSocketServer(httpServer: HttpServer): SocketIOServer {
+  const origins = env.CLIENT_ORIGIN.split(',').map(o => o.trim());
+  
   const io = new SocketIOServer(httpServer, {
     cors: {
-      origin: env.CLIENT_ORIGIN,
+      origin: origins.includes('*') ? '*' : origins,
       methods: ['GET', 'POST'],
       credentials: true,
     },
